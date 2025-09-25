@@ -4,4 +4,4 @@
 	branch = master-next
 [submodule "submodules/zfsonlinux"]
 	path = submodules/zfsonlinux
-	url = https://github.com/openzfs/zfs
+	url = https://github.com/jaminmc/zfs
