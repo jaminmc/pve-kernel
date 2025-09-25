@@ -2,11 +2,11 @@ include /usr/share/dpkg/pkg-info.mk
 
 # also bump proxmox-kernel-meta if the default MAJ.MIN version changes!
 KERNEL_MAJ=6
-KERNEL_MIN=14
-KERNEL_PATCHLEVEL=11
+KERNEL_MIN=17
+KERNEL_PATCHLEVEL=0
 # increment KREL for every published package release!
 # rebuild packages with new KREL and run 'make abiupdate'
-KREL=2
+KREL=5.5
 
 # Use to create a separate package for the same version, like -bpoXY for backport or test-$foo.
 # This way the package can be co-installed with the original, a requirement for major dist updates.
@@ -125,11 +125,10 @@ $(MODULES).prepared: $(addsuffix .prepared,$(MODULE_DIRS))
 	touch $@
 
 $(ZFSDIR).prepared: $(ZFSONLINUX_SUBMODULE)
-	rm -rf $(BUILD_DIR)/$(MODULES)/$(ZFSDIR) $(BUILD_DIR)/$(MODULES)/tmp $@
-	mkdir -p $(BUILD_DIR)/$(MODULES)/tmp
-	cp -a $(ZFSONLINUX_SUBMODULE)/* $(BUILD_DIR)/$(MODULES)/tmp
-	cd $(BUILD_DIR)/$(MODULES)/tmp; make kernel
-	rm -rf $(BUILD_DIR)/$(MODULES)/tmp
+	rm -rf $(BUILD_DIR)/$(MODULES)/$(ZFSDIR) $@
+	mkdir -p $(BUILD_DIR)/$(MODULES)/$(ZFSDIR)
+	cp -a $(ZFSONLINUX_SUBMODULE)/* $(BUILD_DIR)/$(MODULES)/$(ZFSDIR)
+	cd $(BUILD_DIR)/ubuntu-kernel && make prepare modules_prepare && cd ../modules/$(ZFSDIR) && ./autogen.sh && ./configure --with-linux=../../ubuntu-kernel --with-linux-obj=../../ubuntu-kernel --enable-linux-builtin && make all
 	touch $(ZFSDIR).prepared
 
 .PHONY: upload
