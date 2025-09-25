@@ -146,7 +146,7 @@ pve-firmware
 
 Contains the firmware for all released PVE kernels.
 
-git clone git://git.proxmox.com/git/pve-firmware.git
+git clone -b 6.17Kernel2 https://github.com/jaminmc/pve-firmware
 
 
 NOTES:
