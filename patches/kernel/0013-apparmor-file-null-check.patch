@@ -1,0 +1,25 @@
+This is a regression in AppArmor's AF_UNIX socket mediation (mainlined in Linux 6.17 via commit c05e705812d179f4b85aeacc34a555a42bc4f9ac).
+The mediation mishandles socket labels during file_receive, leading to uninitialized contexts. No upstream patch exists
+(searches on kernel.org, Launchpad, and AppArmor GitLab show similar issues in 6.3-6.5 but not this exact dereference).
+
+Temporary Patch
+Add a null check for the file context (fctx) in aa_file_perm to prevent the dereference. This is defensive and allows the operation if no context is set (e.g., unconfined), avoiding the crash while logging for debugging.
+
+
+diff -u security/apparmor/file.c security/apparmor/file-fix.c 
+--- a/security/apparmor/file.c	2025-09-26 04:05:47.386213864 +0000
++++ b/security/apparmor/file.c	2025-09-26 04:12:04.012664968 +0000
+@@ -814,6 +814,13 @@
+ 
+ 	fctx = file_ctx(file);
+ 
++	// ADD THIS NULL CHECK TO PREVENT DEREFERENCE AT OFFSET 0x18
++	if (!fctx) {
++		printk(KERN_WARNING "AppArmor: NULL fctx in aa_file_perm for file %p (op: %s, request: 0x%x)\n",
++		       file, op ? op : "unknown", request);
++		return 0;  // Allow if no context (unconfined or error)
++	}
++	
+ 	rcu_read_lock();
+ 	flabel  = rcu_dereference(fctx->label);
+ 	AA_BUG(!flabel);
