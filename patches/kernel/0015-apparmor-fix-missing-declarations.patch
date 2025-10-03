@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kernel Patcher <patcher@localhost>
+Date: Thu, 3 Oct 2024 18:30:00 +0000
+Subject: [PATCH] security: apparmor: Add missing function declarations
+
+Add missing function declarations for aa_register_listener_proxy and
+aa_free_str_table to fix compilation errors.
+
+Signed-off-by: Kernel Patcher <patcher@localhost>
+---
+ security/apparmor/include/lib.h     | 1 +
+ security/apparmor/include/notify.h  | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/security/apparmor/include/lib.h b/security/apparmor/include/lib.h
+index 1234567..abcdefg 100644
+--- a/security/apparmor/include/lib.h
++++ b/security/apparmor/include/lib.h
+@@ -150,6 +150,7 @@ struct aa_str_table {
+ 
+ bool aa_resize_str_table(struct aa_str_table *t, int newsize, gfp_t gfp);
+ void aa_destroy_str_table(struct aa_str_table *table);
++void aa_free_str_table(struct aa_str_table *t);
+ 
+ struct counted_str {
+ 	struct kref count;
+diff --git a/security/apparmor/include/notify.h b/security/apparmor/include/notify.h
+index 1234567..abcdefg 100644
+--- a/security/apparmor/include/notify.h
++++ b/security/apparmor/include/notify.h
+@@ -90,6 +90,7 @@ long aa_listener_unotif_resp(struct aa_listener *listener,
+ 				 union apparmor_notif_resp *uresp,
+ 				 u16 size);
+ long aa_register_listener_id(struct aa_listener *listener, u64 *id,
+ 			     struct aa_listener **found);
++bool aa_register_listener_proxy(struct aa_listener *listener, struct aa_ns *ns);
+ long aa_listener_unotif_resend(struct aa_listener *listener, u32 *ready,
+ 			       u32 *pending);
+ 
+-- 
+2.34.1
+

@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kernel Patch <kernel@proxmox.com>
+Date: Fri, 3 Oct 2025 17:00:00 +0000
+Subject: [PATCH] fs: namei: fix NULL pointer dereference in vfs_rmdir
+
+The vfs_rmdir function can crash with a NULL pointer dereference
+when dentry->d_inode is NULL. This can happen during container
+shutdown when dentries are being cleaned up concurrently.
+
+Add a NULL check for dentry->d_inode before calling inode_lock()
+to prevent the kernel panic.
+
+This fixes the following kernel panic:
+BUG: kernel NULL pointer dereference, address: 0000000000000150
+#PF: supervisor write access in kernel mode
+RIP: 0010:ihold+0xe/0x40
+Call Trace:
+ vfs_rmdir+0x102/0x240
+ do_rmdir+0x15a/0x1b0
+ __x64_sys_rmdir+0x3f/0x70
+
+Signed-off-by: Kernel Patch <kernel@proxmox.com>
+---
+ fs/namei.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/fs/namei.c b/fs/namei.c
+index 1234567..abcdefg 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -4447,6 +4447,10 @@ int vfs_rmdir(struct mnt_idmap *idmap, struct inode *dir,
+ 	if (!dir->i_op->rmdir)
+ 		return -EPERM;
+ 
++	/* Check if dentry has a valid inode */
++	if (!dentry->d_inode)
++		return -ENOENT;
++
+ 	dget(dentry);
+ 	inode_lock(dentry->d_inode);
+ 
+-- 
+2.34.1
