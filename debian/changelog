@@ -1,3 +1,9 @@
+proxmox-kernel-6.17 (6.17.0-5.5-1) trixie; urgency=medium
+
+  * Fix test build for new Kernel.
+
+ -- jaminmc <jaminmc@github.com>  Fri, 03 Oct 2025 12:04:45 +0200
+
 proxmox-kernel-6.17 (6.17.0-5.5) trixie; urgency=medium
 
   * Test build for new Kernel.
