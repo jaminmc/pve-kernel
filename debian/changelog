@@ -1,3 +1,12 @@
+proxmox-kernel-6.17 (6.17.1-6.6) trixie; urgency=medium
+
+  * questing/linux: 6.17.1-6.6 -proposed tracker (LP: #2126040)
+
+  * Questing update: v6.17.1 upstream stable release (LP: #2126948)
+
+ -- jaminmc <jaminmc@github.com>  Wed, 08 Oct 2025 12:04:45 +0200
+
+
 proxmox-kernel-6.17 (6.17.0-5.5-1) trixie; urgency=medium
 
   * Fix test build for new Kernel.

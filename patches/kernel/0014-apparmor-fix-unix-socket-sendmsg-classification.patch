@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: System Administrator <root@localhost>
+Date: Wed, 9 Oct 2025 19:40:00 +0000
+Subject: [PATCH] apparmor: don't use file permissions for Unix socket
+ sendmsg/recvmsg
+
+AppArmor 5.0.0 introduced fine-grained Unix socket mediation that treats
+filesystem-bound Unix sockets as files. However, this causes incorrect
+permission denials for sendmsg/recvmsg operations.
+
+The issue: apparmor_unix_may_send() performs bidirectional checks, and the
+receiver-side check uses file-based permissions (unix_fs_perm) which asks
+for file READ permission when it should use socket-level permissions.
+
+This results in audit denials like:
+  apparmor="DENIED" operation="sendmsg" class="file"
+  name="/run/systemd/journal/dev-log"
+  requested_mask="r" denied_mask="r"
+
+For sendmsg/recvmsg, AppArmor should NOT use filesystem permissions.
+These operations should be mediated at the socket level.
+
+This is a regression from AppArmor 4.x (kernel 6.14) which didn't have this issue.
+
+Fix: Skip file-based permission checks for sendmsg/recvmsg operations,
+allowing socket-level mediation to handle them correctly.
+
+Signed-off-by: System Administrator <root@localhost>
+---
+ security/apparmor/af_unix.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/security/apparmor/af_unix.c b/security/apparmor/af_unix.c
+--- a/security/apparmor/af_unix.c
++++ b/security/apparmor/af_unix.c
+@@ -406,12 +406,19 @@ static int profile_peer_perm(struct aa_profile *profile, const char *op,
+ 	if (state) {
+ 		struct aa_profile *peerp;
+ 
+-		if (peer_path)
+-			return unix_fs_perm(ad->op, request, ad->subj_cred,
+-					    &profile->label, peer_path);
+-		else if (path)
+-			return unix_fs_perm(ad->op, request, ad->subj_cred,
+-					    &profile->label, path);
++		/* Don't use file-based permissions for message passing.
++		 * sendmsg/recvmsg should use socket permissions, not file r/w.
++		 */
++		if ((peer_path || path) &&
++		    strcmp(ad->op, OP_SENDMSG) != 0 && strcmp(ad->op, OP_RECVMSG) != 0) {
++			if (peer_path)
++				return unix_fs_perm(ad->op, request, ad->subj_cred,
++						    &profile->label, peer_path);
++			else if (path)
++				return unix_fs_perm(ad->op, request, ad->subj_cred,
++						    &profile->label, path);
++		}
++		/* For sendmsg/recvmsg, skip fs checks and use socket mediation */
+ 		state = match_to_peer(rules->policy, state, request,
+ 				      unix_sk(sk),
+ 				      peer_addr, peer_addrlen, &p, &ad->info);

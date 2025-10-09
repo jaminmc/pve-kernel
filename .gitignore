@@ -7,3 +7,4 @@
 /config*.org
 /proxmox-kernel-[0-9]*/
 build.log
+build-final.log
