@@ -1,6 +1,7 @@
-[submodule "submodules/zfsonlinux"]
-	path = submodules/zfsonlinux
-	url = ../zfsonlinux
 [submodule "submodules/ubuntu-kernel"]
 	path = submodules/ubuntu-kernel
-	url = ../mirror_ubuntu-kernels
+	url = https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/resolute
+	branch = master-next
+[submodule "submodules/zfsonlinux"]
+	path = submodules/zfsonlinux
+	url = https://github.com/jaminmc/zfsonlinux.git

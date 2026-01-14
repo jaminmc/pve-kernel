@@ -1,8 +1,14 @@
+proxmox-kernel-6.18 (6.18.0-1) trixie; urgency=medium
+
+  * update kernel to 6.18.0 based on Ubuntu-6.18.0-9.9.
+
+ -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Wed, 14 Jan 2026 17:25:15 +0100
+
 proxmox-kernel-6.17 (6.17.9-1) trixie; urgency=medium
 
   * update kernel to 6.17.9 based on Ubuntu-6.17.0-14.14.
 
-  * update ZFS module to 2.3.5 release.
+  * update ZFS module to 2.4.0 release.
 
  -- Proxmox Support Team <support@proxmox.com>  Mon, 12 Jan 2026 17:25:15 +0100
 

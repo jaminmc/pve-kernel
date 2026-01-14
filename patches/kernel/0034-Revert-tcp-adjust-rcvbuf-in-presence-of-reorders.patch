@@ -22,11 +22,11 @@ index 42b1578210614f8551578ac6a36f67098e03b876..ebd1934b195473d96ee9105f5c0670d3
  	cap = READ_ONCE(net->ipv4.sysctl_tcp_rmem[2]);
  
  	rcvbuf = min_t(u32, tcp_space_from_win(sk, rcvwin), cap);
-@@ -5051,7 +5048,6 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
+@@ -5251,7 +5254,6 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
  		skb_condense(skb);
  		skb_set_owner_r(skb, sk);
  	}
--	tcp_rcvbuf_grow(sk);
+-	tcp_rcvbuf_grow(sk, tp->rcvq_space.space);
  }
  
  static int __must_check tcp_queue_rcv(struct sock *sk, struct sk_buff *skb,

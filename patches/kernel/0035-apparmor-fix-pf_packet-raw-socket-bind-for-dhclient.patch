@@ -1,0 +1,69 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jaminmc <1310376+jaminmc@users.noreply.github.com>
+Date: Sat, 11 Jan 2026 00:00:00 +0000
+Subject: [PATCH] apparmor: fix PF_PACKET raw socket bind for dhclient
+
+In kernel 6.18.0, aa_profile_af_sk_perm was changed to call
+aa_profile_af_compat_perm instead of aa_profile_af_perm, and it no
+longer passes the protocol parameter. This breaks raw sockets (PF_PACKET)
+used by dhclient, which require the protocol parameter for proper
+mediation.
+
+The fix is to make profile_af_perm non-static and update
+aa_profile_af_sk_perm to call it with the protocol parameter, restoring
+the behavior from 6.17.4.
+
+This fixes LXC containers not being able to get IPv4 addresses because
+AppArmor blocks dhclient from binding raw sockets.
+
+---
+ security/apparmor/include/net.h |  5 +++++
+ security/apparmor/net.c         |  3 +--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/security/apparmor/include/net.h b/security/apparmor/include/net.h
+index 1234567..abcdefg 100644
+--- a/security/apparmor/include/net.h
++++ b/security/apparmor/include/net.h
+@@ -113,6 +113,9 @@ void audit_net_cb(struct audit_buffer *ab, void *va);
+ int aa_profile_af_compat_perm(struct aa_profile *profile,
+ 			      struct apparmor_audit_data *ad,
+ 			      u32 request, u16 family, int type);
++int aa_profile_af_perm(struct aa_profile *profile,
++		       struct apparmor_audit_data *ad, u32 request,
++		       u16 family, int type, int protocol);
+ int aa_af_perm(const struct cred *subj_cred, struct aa_label *label,
+ 	       const char *op, u32 request, u16 family,
+ 	       int type, int protocol);
+@@ -120,8 +123,8 @@ static inline int aa_profile_af_sk_perm(struct aa_profile *profile,
+ 					struct apparmor_audit_data *ad,
+ 					u32 request, struct sock *sk)
+ {
+-	return aa_profile_af_compat_perm(profile, ad, request, sk->sk_family,
+-					 sk->sk_type);
++	return aa_profile_af_perm(profile, ad, request, sk->sk_family,
++				  sk->sk_type, sk->sk_protocol);
+ }
+ int aa_sk_perm(const char *op, u32 request, struct sock *sk);
+ 
+diff --git a/security/apparmor/net.c b/security/apparmor/net.c
+index 1234567..abcdefg 100644
+--- a/security/apparmor/net.c
++++ b/security/apparmor/net.c
+@@ -290,7 +290,7 @@ int aa_profile_af_compat_perm(struct aa_profile *profile,
+ }
+ 
+ /* Generic af perm */
+-static int profile_af_perm(struct aa_profile *profile,
++int aa_profile_af_perm(struct aa_profile *profile,
+ 			   struct apparmor_audit_data *ad, u32 request,
+ 			   u16 family, int type, int protocol)
+ {
+@@ -310,7 +310,7 @@ int aa_profile_af_perm(struct aa_profile *profile,
+ 	DEFINE_AUDIT_NET(ad, op, subj_cred, NULL, family, type, protocol);
+ 
+ 	return fn_for_each_confined(label, profile,
+-			profile_af_perm(profile, &ad, request, family, type,
++			aa_profile_af_perm(profile, &ad, request, family, type,
+ 					protocol));
+ }

@@ -2,15 +2,15 @@ include /usr/share/dpkg/pkg-info.mk
 
 # also bump proxmox-kernel-meta if the default MAJ.MIN version changes!
 KERNEL_MAJ=6
-KERNEL_MIN=17
-KERNEL_PATCHLEVEL=9
+KERNEL_MIN=18
+KERNEL_PATCHLEVEL=0
 # increment KREL for every published package release!
 # rebuild packages with new KREL and run 'make abiupdate'
 KREL=1
 
 # Use to create a separate package for the same version, like -bpoXY for backport or test-$foo.
 # This way the package can be co-installed with the original, a requirement for major dist updates.
-KREL_EXTRA=
+KREL_EXTRA=-jaminmc
 # Normally empty, but allows adding a part just for the debian package revision, like ~bpoXY+Z.
 # For the kernel pkg itself it wouldn't matter, but for the meta pkgs it allows major dist upgrades.
 PKG_REV_EXTRA=
@@ -112,6 +112,7 @@ $(KERNEL_SRC).prepared: $(KERNEL_SRC_SUBMODULE) | submodule
 # TODO: split for archs, track and diff in our repository?
 	cd $(BUILD_DIR)/$(KERNEL_SRC); python3 debian/scripts/misc/annotations --arch amd64 --export >../../$(KERNEL_CFG_ORG)
 	cp $(KERNEL_CFG_ORG) $(BUILD_DIR)/$(KERNEL_SRC)/.config
+	sed -i $(BUILD_DIR)/$(KERNEL_SRC)/Makefile -e 's/^SUBLEVEL.*$$/SUBLEVEL = $(KERNEL_PATCHLEVEL)/'
 	sed -i $(BUILD_DIR)/$(KERNEL_SRC)/Makefile -e 's/^EXTRAVERSION.*$$/EXTRAVERSION=$(EXTRAVERSION)/'
 	rm -rf $(BUILD_DIR)/$(KERNEL_SRC)/debian $(BUILD_DIR)/$(KERNEL_SRC)/debian.master
 	set -e; cd $(BUILD_DIR)/$(KERNEL_SRC); \
