@@ -73,12 +73,12 @@ maintenance burden is high.
 Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
 ---
  arch/x86/kvm/cpuid.c |  5 +++++
- arch/x86/kvm/cpuid.h |  3 +++
+ arch/x86/kvm/cpuid.h |  1 +
  arch/x86/kvm/x86.c   | 13 +++++++++++++
- 3 files changed, 21 insertions(+)
+ 3 files changed, 19 insertions(+)
 
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index e2836a255b1679de1ef76a6869fdf25217b8b201..329d44fb2c58f4d7578882dbe2eb3cad30802a16 100644
+index 88a5426674a10bd689c1788b0829f3587e3ca1c5..6a1b6086e8de435b9d3dd09ac6e43329b981e23d 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
 @@ -263,6 +263,11 @@ static u64 cpuid_get_supported_xcr0(struct kvm_vcpu *vcpu)
@@ -89,30 +89,27 @@ index e2836a255b1679de1ef76a6869fdf25217b8b201..329d44fb2c58f4d7578882dbe2eb3cad
 +	u64 guest_supported_xcr0 = cpuid_get_supported_xcr0(vcpu);
 +	return (guest_supported_xcr0 & XFEATURE_MASK_PKRU) != 0;
 +}
-+
- static __always_inline void kvm_update_feature_runtime(struct kvm_vcpu *vcpu,
- 						       struct kvm_cpuid_entry2 *entry,
- 						       unsigned int x86_feature,
++	
+ static u64 cpuid_get_supported_xss(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_cpuid_entry2 *best;
 diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index d3f5ae15a7ca314675ad0b4e7347ddd2c205a69f..d9d3f24eca4ec7f48680933ef7291c52d48b2036 100644
+index d3f5ae15a7ca314675ad0b4e7347ddd2c205a69f..a4a40ebaa5d5c71d3d3333f2a9b718cbc50e7f56 100644
 --- a/arch/x86/kvm/cpuid.h
 +++ b/arch/x86/kvm/cpuid.h
-@@ -54,7 +54,10 @@ int kvm_vcpu_ioctl_get_cpuid2(struct kvm_vcpu *vcpu,
+@@ -53,6 +53,7 @@ int kvm_vcpu_ioctl_get_cpuid2(struct kvm_vcpu *vcpu,
+ 			      struct kvm_cpuid_entry2 __user *entries);
  bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
  	       u32 *ecx, u32 *edx, bool exact_only);
- 
 +bool vcpu_supports_xsave_pkru(struct kvm_vcpu *vcpu);
-+
- void __init kvm_init_xstate_sizes(void);
-+
- u32 xstate_required_size(u64 xstate_bv, bool compacted);
  
- int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
+ void __init kvm_init_xstate_sizes(void);
+ u32 xstate_required_size(u64 xstate_bv, bool compacted);
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c91fc5062ad834b055541dceb02f2821493bc8da..751a8fce29c40748751495e0ce01996bf7e5171b 100644
+index 72d37c8930ad78e55758c90540c0e3d23160ad6f..7d73b966dce4344ec697add670b6e6b27f95c2ba 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -5708,6 +5708,19 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+@@ -5812,6 +5812,19 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
  	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
  		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
  
@@ -129,6 +126,6 @@ index c91fc5062ad834b055541dceb02f2821493bc8da..751a8fce29c40748751495e0ce01996b
 +		}
 +	}
 +
- 	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
- 					      guest_xsave->region,
- 					      kvm_caps.supported_xcr0,
+ 	/*
+ 	 * For backwards compatibility, do not expect disabled features to be in
+ 	 * their initial state.  XSTATE_BV[i] must still be cleared whenever
