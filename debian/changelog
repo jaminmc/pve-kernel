@@ -1,3 +1,15 @@
+proxmox-kernel-6.19 (6.19.2-1~jaminmc1) trixie; urgency=medium
+
+  * update kernel to 6.19.2 based on Ubuntu-6.19.0-6.6.
+  * update ZFS to OpenZFS 2.4.1.
+  * drop apparmor: avoid null-deref when checking socket access patch
+    (picked up upstream in Ubuntu-6.19.0-6.6).
+  * drop TCP revert series (patches 0014-0034): all reverts not needed for 6.19.2.
+  * update .gitmodules to use absolute upstream URLs.
+  * rebase remaining patches (0004-0012) on top of Ubuntu-6.19.0-6.6.
+
+ -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Thu, 05 Mar 2026 16:06:27 -0500
+
 proxmox-kernel-6.17 (6.17.13-1) trixie; urgency=medium
 
   * update kernel to 6.17.13 based on Ubuntu-6.17.0-16.16.
