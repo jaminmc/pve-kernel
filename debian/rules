@@ -4,6 +4,11 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+# Prevent scripts/setlocalversion from appending '+' when the kernel source
+# tree has uncommitted changes (which is always the case after patch application).
+# When LOCALVERSION is set (even to empty), setlocalversion skips the git dirty check.
+export LOCALVERSION=
+
 # TODO: check for headers not being installed
 BUILD_DIR=$(shell pwd)
 
