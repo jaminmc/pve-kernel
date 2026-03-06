@@ -9,9 +9,6 @@ proxmox-kernel-6.19 (6.19.5-1~jaminmc1) trixie; urgency=medium
     llbitmap percpu_ref handling.
   * netfilter: nf_tables: add .abort_skip_removal flag for set types.
   * rcu: fix rcu_read_unlock() deadloop due to softirq.
-  * accel/amdxdna: support protocol 7 firmware (npu_7.sbin) with fallback
-    to protocol 6 (npu.sbin), fixing AMD NPU probe failure on Hawk Point /
-    Strix / Strix Halo with updated pve-firmware (e.g. Ryzen AI HX 370).
 
  -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Fri, 06 Mar 2026 12:00:00 -0500
 
