@@ -1,3 +1,20 @@
+proxmox-kernel-6.19 (6.19.5-1~jaminmc1) trixie; urgency=medium
+
+  * update kernel to 6.19.5 based on Ubuntu-6.19.0-9.9.
+  * rebase patches on top of Ubuntu-6.19.0-9.9.
+  * include upstream stable v6.19.4 and v6.19.5.
+  * apparmor: fix fine grained inet mediation sock_file_perm
+    (fixes write(2) blocked on network sockets, LP: #2141298).
+  * md/raid: fix IO hang on degraded arrays, memory leaks, and
+    llbitmap percpu_ref handling.
+  * netfilter: nf_tables: add .abort_skip_removal flag for set types.
+  * rcu: fix rcu_read_unlock() deadloop due to softirq.
+  * accel/amdxdna: support protocol 7 firmware (npu_7.sbin) with fallback
+    to protocol 6 (npu.sbin), fixing AMD NPU probe failure on Hawk Point /
+    Strix / Strix Halo with updated pve-firmware (e.g. Ryzen AI HX 370).
+
+ -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Fri, 06 Mar 2026 12:00:00 -0500
+
 proxmox-kernel-6.19 (6.19.2-1~jaminmc1) trixie; urgency=medium
 
   * update kernel to 6.19.2 based on Ubuntu-6.19.0-6.6.
