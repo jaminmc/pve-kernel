@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eE -o pipefail
 
 top=$(pwd)
 
@@ -17,24 +17,44 @@ old_ref=
 
 function cleanup_pq_branch {
     if [[ -n $pq_branch ]]; then
-	echo "cleaning up PQ branch '$pq_branch'"
-	cd "${top}/${kernel_submodule}"
-	git checkout --quiet $old_ref
-	git reset --hard
-	git branch -D "$pq_branch"
+        echo "cleaning up PQ branch '$pq_branch'"
+        cd "${top}/${kernel_submodule}"
+
+        # If a rebase/apply sequence is in progress, abort it first so checkout/reset can succeed.
+        git rebase --abort >/dev/null 2>&1 || true
+        git am --abort >/dev/null 2>&1 || true
+        git merge --abort >/dev/null 2>&1 || true
+        git cherry-pick --abort >/dev/null 2>&1 || true
+
+        if [[ -n $old_ref ]]; then
+            git checkout --quiet "$old_ref" >/dev/null 2>&1 || git checkout --quiet -f "$old_ref" >/dev/null 2>&1 || true
+            git reset --hard "$old_ref" >/dev/null 2>&1 || git reset --hard >/dev/null 2>&1 || true
+        else
+            git reset --hard >/dev/null 2>&1 || true
+        fi
+        git branch -D "$pq_branch" >/dev/null 2>&1 || true
     fi
 }
 
 function error_exit {
-    echo "$1"
-    set +e
-
-    cleanup_pq_branch
-
-    cd "${top}"
-
+    echo "$1" >&2
     exit 1
 }
+
+function on_exit {
+    status="$1"
+    set +e
+
+    if [[ "$status" -ne 0 ]]; then
+        cleanup_pq_branch
+    fi
+
+    cd "${top}" >/dev/null 2>&1 || true
+}
+
+trap 'on_exit $?' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 if [[ "$#" -lt 3 || "$#" -gt 4 ]]; then
     echo "USAGE: $0 submodule patchdir tag [rebase]"
