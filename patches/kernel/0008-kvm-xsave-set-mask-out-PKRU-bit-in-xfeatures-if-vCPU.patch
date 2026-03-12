@@ -78,10 +78,10 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  3 files changed, 19 insertions(+)
 
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 88a5426674a10bd689c1788b0829f3587e3ca1c5..6a1b6086e8de435b9d3dd09ac6e43329b981e23d 100644
+index d2486506a8086bd31128faef8bc8320fa24bbaa7..701ed393065624e17433c1b4f15ff295cafb5c33 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -263,6 +263,11 @@ static u64 cpuid_get_supported_xcr0(struct kvm_vcpu *vcpu)
+@@ -266,6 +266,11 @@ static u64 cpuid_get_supported_xcr0(struct kvm_vcpu *vcpu)
  	return (best->eax | ((u64)best->edx << 32)) & kvm_caps.supported_xcr0;
  }
  
@@ -94,10 +94,10 @@ index 88a5426674a10bd689c1788b0829f3587e3ca1c5..6a1b6086e8de435b9d3dd09ac6e43329
  {
  	struct kvm_cpuid_entry2 *best;
 diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index d3f5ae15a7ca314675ad0b4e7347ddd2c205a69f..a4a40ebaa5d5c71d3d3333f2a9b718cbc50e7f56 100644
+index 039b8e6f40baf77d5d38aefcad6f958203bf780e..83df4c3c4b6993f1814b19f2fd56030778a12353 100644
 --- a/arch/x86/kvm/cpuid.h
 +++ b/arch/x86/kvm/cpuid.h
-@@ -53,6 +53,7 @@ int kvm_vcpu_ioctl_get_cpuid2(struct kvm_vcpu *vcpu,
+@@ -61,6 +61,7 @@ int kvm_vcpu_ioctl_get_cpuid2(struct kvm_vcpu *vcpu,
  			      struct kvm_cpuid_entry2 __user *entries);
  bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
  	       u32 *ecx, u32 *edx, bool exact_only);
@@ -106,10 +106,10 @@ index d3f5ae15a7ca314675ad0b4e7347ddd2c205a69f..a4a40ebaa5d5c71d3d3333f2a9b718cb
  void __init kvm_init_xstate_sizes(void);
  u32 xstate_required_size(u64 xstate_bv, bool compacted);
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 72d37c8930ad78e55758c90540c0e3d23160ad6f..7d73b966dce4344ec697add670b6e6b27f95c2ba 100644
+index a03530795707797b73c701b0c952d46d27389e8d..abbb3374cfaea4a1bbd4e76a97bb1f72d2d4d741 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -5812,6 +5812,19 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+@@ -5827,6 +5827,19 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
  	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
  		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
  

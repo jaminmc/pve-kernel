@@ -1,12 +1,8 @@
-proxmox-kernel-6.19 (6.19.5-2~jaminmc1) trixie; urgency=medium
+proxmox-kernel-7.0 (7.0.0-1~jaminmc1) trixie; urgency=medium
 
-  * accel/amdxdna: drop premature protocol-7 firmware patch. The patch
-    caused the driver to load npu_7.sbin (protocol 7) before falling back
-    to npu.sbin, but since npu_7.sbin now exists in pve-firmware the
-    fallback never triggered, leaving the NPU broken. The fix is in
-    pve-firmware (3.19-4) which restores npu.sbin to the protocol-6
-    firmware compatible with the current driver. The kernel patch will
-    be re-added alongside the upstream driver update (f1eac46fe5f7).
+  * update kernel to 7.0.0-rc3 based on Ubuntu-7.0.0-6.6.
+  * rebase patches on top of Ubuntu-7.0.0-6.6 (7.0.0 RC3), as the
+    stable 7.0.0 release is not available yet.
 
  -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Fri, 06 Mar 2026 19:00:00 -0500
 
