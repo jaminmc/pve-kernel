@@ -1,8 +1,19 @@
 #!/bin/bash
 
-set -e
+set -eE -o pipefail
 
 top=$(pwd)
+tmp_patchdir=
+
+function on_exit {
+    set +e
+    if [[ -n "$tmp_patchdir" && -d "$tmp_patchdir" ]]; then
+        rm -rf "$tmp_patchdir"
+    fi
+    cd "${top}" >/dev/null 2>&1 || true
+}
+
+trap 'on_exit' EXIT
 
 if [ "$#" -ne 3 ]; then
     echo "USAGE: $0 repo patchdir ref"
@@ -16,8 +27,7 @@ kernel_patchdir=$2
 base_ref=$3
 
 cd "${kernel_submodule}"
-echo "clearing old exported patchqueue"
-rm -f "${top}/${kernel_patchdir}"/*.patch
+tmp_patchdir=$(mktemp -d "${top}/.export-patchqueue.XXXXXX")
 echo "exporting patchqueue using 'git format-patch [...] ${base_ref}.."
 git format-patch \
     --quiet \
@@ -27,9 +37,16 @@ git format-patch \
     --no-signature \
     --diff-algorithm=myers \
     --full-index \
-    --output-directory="${top}/${kernel_patchdir}" \
+    --output-directory="${tmp_patchdir}" \
     "${base_ref}.."
 
 git checkout "${base_ref}"
 
 cd "${top}"
+echo "replacing old exported patchqueue"
+rm -f "${kernel_patchdir}"/*.patch
+shopt -s nullglob
+for patch in "${tmp_patchdir}"/*.patch; do
+    mv "$patch" "${kernel_patchdir}/"
+done
+shopt -u nullglob

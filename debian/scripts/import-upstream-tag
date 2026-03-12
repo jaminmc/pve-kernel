@@ -14,6 +14,8 @@ rebase=
 pq_branch=
 # previously checked out in submodule
 old_ref=
+# keep a failed pq branch for manual conflict resolution
+preserve_pq_on_error=0
 
 function cleanup_pq_branch {
     if [[ -n $pq_branch ]]; then
@@ -45,7 +47,7 @@ function on_exit {
     status="$1"
     set +e
 
-    if [[ "$status" -ne 0 ]]; then
+    if [[ "$status" -ne 0 && "$preserve_pq_on_error" -eq 0 ]]; then
         cleanup_pq_branch
     fi
 
@@ -106,7 +108,10 @@ if [[ -n "$rebase" ]]; then
     echo "previous HEAD: ${old_ref}"
 
     echo ""
-    "${top}/debian/scripts/import-patchqueue" "${kernel_submodule}" "${kernel_patchdir}" "${pq_branch}" || error_exit "failed to import patchqueue"
+    if ! "${top}/debian/scripts/import-patchqueue" "${kernel_submodule}" "${kernel_patchdir}" "${pq_branch}"; then
+        preserve_pq_on_error=1
+        error_exit "failed to import patchqueue; leaving '${pq_branch}' checked out for manual git am conflict resolution"
+    fi
 
     cd "${kernel_submodule}"
     ## rebase patches
