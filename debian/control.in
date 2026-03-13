@@ -82,6 +82,7 @@ Description: Proxmox Kernel debug image
 
 Package: proxmox-kernel-@KVNAME@-signed-template
 Architecture: amd64
+Build-Profiles: <pkg.proxmox-kernel.signed-template>
 Depends: ${shlibs:Depends}, ${misc:Depends}, make | build-essential | dpkg-dev
 Description: Template for signed kernel package
  This package is used to control code signing by the Proxmox signing

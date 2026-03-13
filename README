@@ -61,6 +61,14 @@ Package Build
  # start the actual build
  make deb
 
+By default, this skips building the `proxmox-kernel-<KVNAME>-signed-template`
+package.
+
+To include the signed template package, enable the
+`pkg.proxmox-kernel.signed-template` build profile:
+
+ DEB_BUILD_PROFILES='pkg.proxmox-kernel.signed-template' make deb
+
 For simple KConfig modifications you can adapt the list in `debian/rules` file.
 For quick code changes to the actual kernel code you can do them directly in
 the submodule/ubuntu-kernels directory, then re-create the build-directory, e.g.:
@@ -191,6 +199,18 @@ be used together with 'crash'/'kdump-tools' to debug kernel crashes.
 Note: the -dbgsym package is only valid for the proxmox-kernel packages produced by
 the same build. A kernel/module from a different build will likely not match,
 even if both builds are of the same kernel and package version.
+
+Signed template package
+-----------------------
+
+The `proxmox-kernel-<KVNAME>-signed-template` package is built only when the
+`pkg.proxmox-kernel.signed-template` build profile is enabled.
+This is not useful for test kernels, as the trusted Secure Boot certificate
+chain used by bootloaders is only available to official distributions.
+
+You can combine profiles by separating them with spaces, for example:
+
+ DEB_BUILD_PROFILES='pkg.proxmox-kernel.debug pkg.proxmox-kernel.signed-template' make deb
 
 Additional information
 ----------------------

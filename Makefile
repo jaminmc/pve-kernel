@@ -62,6 +62,10 @@ LINUX_TOOLS_DBG_DEB=linux-tools-$(KERNEL_MAJMIN)-dbgsym_$(DEB_VERSION)_$(ARCH).d
 
 DEBS=$(DST_DEB) $(META_DEB) $(HDR_DEB) $(META_HDR_DEB) $(LINUX_TOOLS_DEB) $(LINUX_TOOLS_DBG_DEB) $(SIGNED_TEMPLATE_DEB) # $(USR_HDR_DEB)
 
+ifeq ($(filter pkg.proxmox-kernel.signed-template,$(DEB_BUILD_PROFILES)),)
+DEBS := $(filter-out $(SIGNED_TEMPLATE_DEB),$(DEBS))
+endif
+
 all: deb
 deb: $(DEBS)
 	lintian $(DST_DEB)

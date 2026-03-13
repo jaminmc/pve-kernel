@@ -128,6 +128,9 @@ debian/control: $(wildcard debian/*.in)
 	chmod +x debian/$(PMX_HEADER_PKG).postinst
 	sed -e 's/@KVNAME@/$(KVNAME)/g' -e 's/@KVMAJMIN@/$(KERNEL_MAJMIN)/g' < debian/control.in > debian/control
 
+ifeq ($(filter pkg.proxmox-kernel.signed-template,$(DEB_BUILD_PROFILES)),)
+	@echo "'pkg.proxmox-kernel.signed-template' build profile disabled, skipping signing-template metadata generation"
+else
 	# signing-template
 	sed -e '1 s/proxmox-kernel/proxmox-kernel-signed/' -e '1 s/${DEB_VERSION}/${PMX_KERNEL_SIGNED_VERSION}/' < debian/changelog > debian/signing-template/changelog
 	sed -e 's/@KVNAME@/${KVNAME}/g' -e 's/@KVMAJMIN@/$(KERNEL_MAJMIN)/g' -e 's/@UNSIGNED_VERSION@/${DEB_VERSION}/g' < debian/signing-template/control.in > debian/signing-template/control
@@ -138,6 +141,7 @@ debian/control: $(wildcard debian/*.in)
 	sed -e 's/@@KVNAME@@/${KVNAME}/g' < debian/proxmox-kernel.postinst.in > debian/signing-template/postinst
 	rm debian/signing-template/*.in
 	cp debian/SOURCE debian/signing-template/
+endif
 
 build: .compile_mark .tools_compile_mark .modules_compile_mark
 
@@ -217,6 +221,9 @@ endif
 	rm -f debian/$(PMX_KERNEL_PKG)/usr/lib/modules/$(KVNAME)/source
 	rm -f debian/$(PMX_KERNEL_PKG)/usr/lib/modules/$(KVNAME)/build
 
+ifeq ($(filter pkg.proxmox-kernel.signed-template,$(DEB_BUILD_PROFILES)),)
+	echo "'pkg.proxmox-kernel.signed-template' build profile disabled, skipping -signed-template package contents"
+else
 	# copy signing template contents
 	rm -rf debian/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}
 	mkdir -p debian/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}/usr/share/code-signing/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}/source-template/debian
@@ -231,6 +238,7 @@ endif
 		debian/signing-template/SOURCE \
 		debian/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}/usr/share/code-signing/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}/source-template/debian
 	cp debian/signing-template/files.json debian/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}/usr/share/code-signing/${PMX_KERNEL_SIGNING_TEMPLATE_PKG}/
+endif
 
 	# only clean-up signing key now to allow continuing build if anything from above fails
 	if grep -q CONFIG_MODULE_SIG=y ubuntu-kernel/.config ; then \
