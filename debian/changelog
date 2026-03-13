@@ -1,3 +1,6 @@
+proxmox-kernel-7.0 (7.0.0-2~jaminmc1) trixie; urgency=medium
+  * update kernel to 7.0.0-rc3 based on Ubuntu-7.0.0-7.7.
+
 proxmox-kernel-7.0 (7.0.0-1~jaminmc1) trixie; urgency=medium
 
   * update kernel to 7.0.0-rc3 based on Ubuntu-7.0.0-6.6.
