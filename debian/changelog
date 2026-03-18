@@ -1,3 +1,8 @@
+proxmox-kernel-7.0 (7.0.0-8~jaminmc1) trixie; urgency=medium
+  * update kernel to 7.0.0-rc4 based on Ubuntu-7.0.0-8.8.
+
+ -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Wed, 18 Mar 2026 04:26:38 -0400
+
 proxmox-kernel-7.0 (7.0.0-2~jaminmc1) trixie; urgency=medium
   * update kernel to 7.0.0-rc3 based on Ubuntu-7.0.0-7.7.
 
