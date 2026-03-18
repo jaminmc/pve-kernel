@@ -1,6 +1,6 @@
-[submodule "submodules/zfsonlinux"]
-	path = submodules/zfsonlinux
-	url = https://github.com/jaminmc/zfsonlinux.git
 [submodule "submodules/ubuntu-kernel"]
 	path = submodules/ubuntu-kernel
 	url = https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/resolute
+[submodule "submodules/zfsonlinux"]
+	path = submodules/zfsonlinux
+	url = git://git.proxmox.com/git/zfsonlinux.git
