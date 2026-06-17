@@ -7,8 +7,6 @@
 BCM2033-FW.bin kernel/drivers/bluetooth/bcm203x.ko
 BCM2033-MD.hex kernel/drivers/bluetooth/bcm203x.ko
 BT3CPCC.bin kernel/drivers/bluetooth/bt3c_cs.ko
-acenic/tg1.bin kernel/drivers/net/ethernet/alteon/acenic.ko
-acenic/tg2.bin kernel/drivers/net/ethernet/alteon/acenic.ko
 adaptec/starfire_rx.bin kernel/drivers/net/ethernet/adaptec/starfire.ko
 adaptec/starfire_tx.bin kernel/drivers/net/ethernet/adaptec/starfire.ko
 adf7242_firmware.bin kernel/drivers/net/ieee802154/adf7242.ko
@@ -100,6 +98,7 @@ amdgpu/dcn_3_5_1_dmcub.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/dcn_3_5_dmcub.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/dcn_3_6_dmcub.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/dcn_4_0_1_dmcub.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
+amdgpu/dcn_4_2_dmcub.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/dimgrey_cavefish_ce.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/dimgrey_cavefish_dmcub.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/dimgrey_cavefish_me.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
@@ -496,6 +495,7 @@ amdgpu/psp_14_0_4_ta.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/psp_14_0_4_toc.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/psp_14_0_5_ta.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/psp_14_0_5_toc.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
+amdgpu/psp_15_0_0_ta.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/psp_15_0_0_toc.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/psp_15_0_8_toc.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/raven2_asd.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
@@ -635,6 +635,7 @@ amdgpu/vcn_4_0_6.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/vcn_4_0_6_1.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/vcn_5_0_0.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/vcn_5_0_1.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
+amdgpu/vcn_5_0_2.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/vcn_5_3_0.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/vega10_acg_smc.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 amdgpu/vega10_asd.bin kernel/drivers/gpu/drm/amd/amdgpu/amdgpu.ko
@@ -1247,7 +1248,6 @@ isdbt_nova_12mhz.inp kernel/drivers/media/common/siano/smsmdtv.ko
 isdbt_nova_12mhz_b0.inp kernel/drivers/media/common/siano/smsmdtv.ko
 isdbt_pele.inp kernel/drivers/media/common/siano/smsmdtv.ko
 isdbt_rio.inp kernel/drivers/media/common/siano/smsmdtv.ko
-isdn/ISAR.BIN kernel/drivers/isdn/hardware/mISDN/speedfax.ko
 isight.fw kernel/drivers/usb/misc/isight_firmware.ko
 isl3886pci kernel/drivers/net/wireless/intersil/p54/p54pci.ko
 isl3886usb kernel/drivers/net/wireless/intersil/p54/p54usb.ko
@@ -1288,7 +1288,7 @@ iwlwifi-bz-a0-gf-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.
 iwlwifi-bz-a0-gf4-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-bz-a0-hr-b0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-cc-a0-77.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
-iwlwifi-dr-a0-pe-a0-c101.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+iwlwifi-dr-a0-pe-a0-c102.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-gl-b0-fm-b0-cIWL_BZ_UCODE_CORE_MAX.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-gl-c0-fm-c0-cIWL_BZ_UCODE_CORE_MAX.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-ma-a0-gf-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
@@ -1301,14 +1301,14 @@ iwlwifi-ma-b0-gf-a0.pnvm kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-ma-b0-gf4-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-ma-b0-gf4-a0.pnvm kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-ma-b0-hr-b0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
-iwlwifi-sc-a0-fm-b0-c101.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
-iwlwifi-sc-a0-fm-c0-c101.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+iwlwifi-sc-a0-fm-b0-c102.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+iwlwifi-sc-a0-fm-c0-c102.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-sc-a0-gf-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-sc-a0-gf4-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-sc-a0-hr-b0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
-iwlwifi-sc-a0-wh-a0-c101.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
-iwlwifi-sc2-a0-fm-c0-c101.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
-iwlwifi-sc2-a0-wh-a0-c101.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+iwlwifi-sc-a0-wh-a0-c102.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+iwlwifi-sc2-a0-fm-c0-c102.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+iwlwifi-sc2-a0-wh-a0-c102.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-so-a0-gf-a0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-so-a0-gf-a0.pnvm kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
 iwlwifi-so-a0-hr-b0-100.ucode kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
@@ -1372,11 +1372,15 @@ me2600_firmware.bin kernel/drivers/comedi/drivers/me_daq.ko
 me4000_firmware.bin kernel/drivers/comedi/drivers/me4000.ko
 mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin kernel/drivers/bluetooth/btmtk.ko
 mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin kernel/drivers/bluetooth/btmtk.ko
+mediatek/WIFI_MT7902_patch_mcu_1_1_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
+mediatek/WIFI_MT7902_patch_mcu_1_1_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921s.ko
 mediatek/WIFI_MT7922_patch_mcu_1_1_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
 mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
 mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921s.ko
 mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921u.ko
 mediatek/WIFI_MT7961_patch_mcu_1a_2_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
+mediatek/WIFI_RAM_CODE_MT7902_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
+mediatek/WIFI_RAM_CODE_MT7902_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921s.ko
 mediatek/WIFI_RAM_CODE_MT7922_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
 mediatek/WIFI_RAM_CODE_MT7961_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921e.ko
 mediatek/WIFI_RAM_CODE_MT7961_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7921/mt7921s.ko
@@ -1415,6 +1419,7 @@ mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin kernel/drivers/net/wireless/me
 mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin kernel/drivers/net/wireless/mediatek/mt76/mt7925/mt7925u.ko
 mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7925/mt7925e.ko
 mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin kernel/drivers/net/wireless/mediatek/mt76/mt7925/mt7925u.ko
+mediatek/mt7927/BT_RAM_CODE_MT6639_2_1_hdr.bin kernel/drivers/bluetooth/btmtk.ko
 mediatek/mt7996/mt7990_rom_patch.bin kernel/drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko
 mediatek/mt7996/mt7990_wm.bin kernel/drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko
 mediatek/mt7996/mt7992_dsp.bin kernel/drivers/net/wireless/mediatek/mt76/mt7996/mt7996e.ko
@@ -1579,6 +1584,7 @@ nvidia/ga100/gsp/booter_unload-570.144.bin kernel/drivers/gpu/nova-core/nova_cor
 nvidia/ga100/gsp/bootloader-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/ga100/gsp/bootloader-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/ga100/gsp/bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
+nvidia/ga100/gsp/gen_bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
 nvidia/ga100/gsp/gsp-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/ga100/gsp/gsp-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/ga100/gsp/gsp-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
@@ -1950,6 +1956,7 @@ nvidia/tu102/gsp/booter_unload-570.144.bin kernel/drivers/gpu/nova-core/nova_cor
 nvidia/tu102/gsp/bootloader-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu102/gsp/bootloader-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu102/gsp/bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
+nvidia/tu102/gsp/gen_bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
 nvidia/tu102/gsp/gsp-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu102/gsp/gsp-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu102/gsp/gsp-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
@@ -1984,6 +1991,7 @@ nvidia/tu104/gsp/booter_unload-570.144.bin kernel/drivers/gpu/nova-core/nova_cor
 nvidia/tu104/gsp/bootloader-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu104/gsp/bootloader-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu104/gsp/bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
+nvidia/tu104/gsp/gen_bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
 nvidia/tu104/gsp/gsp-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu104/gsp/gsp-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu104/gsp/gsp-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
@@ -2018,6 +2026,7 @@ nvidia/tu106/gsp/booter_unload-570.144.bin kernel/drivers/gpu/nova-core/nova_cor
 nvidia/tu106/gsp/bootloader-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu106/gsp/bootloader-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu106/gsp/bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
+nvidia/tu106/gsp/gen_bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
 nvidia/tu106/gsp/gsp-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu106/gsp/gsp-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu106/gsp/gsp-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
@@ -2052,6 +2061,7 @@ nvidia/tu116/gsp/booter_unload-570.144.bin kernel/drivers/gpu/nova-core/nova_cor
 nvidia/tu116/gsp/bootloader-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu116/gsp/bootloader-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu116/gsp/bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
+nvidia/tu116/gsp/gen_bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
 nvidia/tu116/gsp/gsp-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu116/gsp/gsp-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu116/gsp/gsp-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
@@ -2086,6 +2096,7 @@ nvidia/tu117/gsp/booter_unload-570.144.bin kernel/drivers/gpu/nova-core/nova_cor
 nvidia/tu117/gsp/bootloader-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/gsp/bootloader-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/gsp/bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
+nvidia/tu117/gsp/gen_bootloader-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
 nvidia/tu117/gsp/gsp-535.113.01.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/gsp/gsp-570.144.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/gsp/gsp-570.144.bin kernel/drivers/gpu/nova-core/nova_core.ko
@@ -2093,9 +2104,7 @@ nvidia/tu117/nvdec/scrubber.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/sec2/desc.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/sec2/image.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
 nvidia/tu117/sec2/sig.bin kernel/drivers/gpu/drm/nouveau/nouveau.ko
-ositech/Xilinx7OD.bin kernel/drivers/net/ethernet/smsc/smc91c92_cs.ko
 otp.bin kernel/drivers/nfc/fdp/fdp.ko
-pca200e_ecd.bin2 kernel/drivers/atm/fore_200e.ko
 pcxhr/dspb1222e.b56 kernel/sound/pci/pcxhr/snd-pcxhr.ko
 pcxhr/dspb1222hr.b56 kernel/sound/pci/pcxhr/snd-pcxhr.ko
 pcxhr/dspb882e.b56 kernel/sound/pci/pcxhr/snd-pcxhr.ko
@@ -2446,6 +2455,7 @@ rtl_nic/rtl8107e-2.fw kernel/drivers/net/ethernet/realtek/r8169.ko
 rtl_nic/rtl8125a-3.fw kernel/drivers/net/ethernet/realtek/r8169.ko
 rtl_nic/rtl8125b-2.fw kernel/drivers/net/ethernet/realtek/r8169.ko
 rtl_nic/rtl8125bp-2.fw kernel/drivers/net/ethernet/realtek/r8169.ko
+rtl_nic/rtl8125cp-1.fw kernel/drivers/net/ethernet/realtek/r8169.ko
 rtl_nic/rtl8125d-1.fw kernel/drivers/net/ethernet/realtek/r8169.ko
 rtl_nic/rtl8125d-2.fw kernel/drivers/net/ethernet/realtek/r8169.ko
 rtl_nic/rtl8125k-1.fw kernel/drivers/net/ethernet/realtek/r8169.ko
@@ -2519,9 +2529,9 @@ rtw88/rtw8821c_fw.bin kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821c.ko
 rtw88/rtw8822b_fw.bin kernel/drivers/net/wireless/realtek/rtw88/rtw88_8822b.ko
 rtw88/rtw8822c_fw.bin kernel/drivers/net/wireless/realtek/rtw88/rtw88_8822c.ko
 rtw88/rtw8822c_wow_fw.bin kernel/drivers/net/wireless/realtek/rtw88/rtw88_8822c.ko
-rtw89/rtw8851b_fw.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8851b.ko
-rtw89/rtw8852a_fw.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8852a.ko
-rtw89/rtw8852b_fw-1.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8852b.ko
+rtw89/rtw8851b_fw-1.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8851b.ko
+rtw89/rtw8852a_fw-1.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8852a.ko
+rtw89/rtw8852b_fw-2.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8852b.ko
 rtw89/rtw8852bt_fw.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8852bt.ko
 rtw89/rtw8852c_fw-2.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8852c.ko
 rtw89/rtw8922a_fw-4.bin kernel/drivers/net/wireless/realtek/rtw89/rtw89_8922a.ko
@@ -2648,12 +2658,9 @@ xe/bmg_huc.bin kernel/drivers/gpu/drm/xe/xe.ko
 xe/lnl_gsc_1.bin kernel/drivers/gpu/drm/xe/xe.ko
 xe/lnl_guc_70.bin kernel/drivers/gpu/drm/xe/xe.ko
 xe/lnl_huc.bin kernel/drivers/gpu/drm/xe/xe.ko
-xe/nvl_guc_70.55.4.bin kernel/drivers/gpu/drm/xe/xe.ko
 xe/ptl_gsc_1.bin kernel/drivers/gpu/drm/xe/xe.ko
 xe/ptl_guc_70.bin kernel/drivers/gpu/drm/xe/xe.ko
 xe/ptl_huc.bin kernel/drivers/gpu/drm/xe/xe.ko
-yam/1200.bin kernel/drivers/net/hamradio/yam.ko
-yam/9600.bin kernel/drivers/net/hamradio/yam.ko
 yamaha/ds1_ctrl.fw kernel/sound/pci/ymfpci/snd-ymfpci.ko
 yamaha/ds1_dsp.fw kernel/sound/pci/ymfpci/snd-ymfpci.ko
 yamaha/ds1e_ctrl.fw kernel/sound/pci/ymfpci/snd-ymfpci.ko
