@@ -38,10 +38,10 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  3 files changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index b92ff87e35605d62b252aa84ccbd34f8be78731a..7fdc6b787d702b8cefef172f52e1d56a7a46a431 100644
+index 37080382df54865d352415266e8c5a8330236c3c..b2291a766e3f7023ab1f7bec648677decdae4281 100644
 --- a/arch/x86/include/asm/vmx.h
 +++ b/arch/x86/include/asm/vmx.h
-@@ -597,10 +597,11 @@ enum vm_entry_failure_code {
+@@ -608,10 +608,11 @@ enum vm_entry_failure_code {
  #define EPT_VIOLATION_PROT_READ		BIT(3)
  #define EPT_VIOLATION_PROT_WRITE	BIT(4)
  #define EPT_VIOLATION_PROT_EXEC		BIT(5)
@@ -76,10 +76,10 @@ index 412d0829d7a21777c5969ba27293721e9aa3d1c5..adf925500b9e02bce2f23d7882255ec7
  
  	if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c5065f84b78be3ca09cd854611e6c9dc3ec61ae4..fa740f70ee75ecccecec107c54807115cc50e123 100644
+index 04ce321ebdf396848b464e306b86292d0a740db0..30cd5b19ecf94be0f6875f9ed4821000346eaf91 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1855,7 +1855,7 @@ static inline bool tdx_is_sept_violation_unexpected_pending(struct kvm_vcpu *vcp
+@@ -1845,7 +1845,7 @@ static inline bool tdx_is_sept_violation_unexpected_pending(struct kvm_vcpu *vcp
  	if (eeq_type != TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION)
  		return false;
  

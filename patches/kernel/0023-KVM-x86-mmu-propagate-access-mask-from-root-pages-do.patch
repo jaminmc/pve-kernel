@@ -28,10 +28,10 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  4 files changed, 15 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 2a2a5c291c15611097670aa5cab93d88caa69f53..51c605cd15c80829e74173a5fde794ec7dfbea9f 100644
+index 789c55c825145b3b04a87f8baa6d76f74c881888..92805e069755ce8c41b85269d5b78a06d9b37333 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3437,12 +3437,13 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+@@ -3458,12 +3458,13 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
  {
  	struct kvm_shadow_walk_iterator it;
  	struct kvm_mmu_page *sp;
@@ -47,7 +47,7 @@ index 2a2a5c291c15611097670aa5cab93d88caa69f53..51c605cd15c80829e74173a5fde794ec
  	for_each_shadow_entry(vcpu, fault->addr, it) {
  		/*
  		 * We cannot overwrite existing page tables with an NX
-@@ -3455,7 +3456,7 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+@@ -3476,7 +3477,7 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
  		if (it.level == fault->goal_level)
  			break;
  
@@ -56,7 +56,7 @@ index 2a2a5c291c15611097670aa5cab93d88caa69f53..51c605cd15c80829e74173a5fde794ec
  		if (sp == ERR_PTR(-EEXIST))
  			continue;
  
-@@ -3468,7 +3469,7 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+@@ -3489,7 +3490,7 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
  	if (WARN_ON_ONCE(it.level != fault->goal_level))
  		return -EFAULT;
  
@@ -66,7 +66,7 @@ index 2a2a5c291c15611097670aa5cab93d88caa69f53..51c605cd15c80829e74173a5fde794ec
  	if (ret == RET_PF_SPURIOUS)
  		return ret;
 diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index 3429c1413f423b8ad709eaaa858a0fff7b37220e..fa01719baf8d4f046e90dc0676109145628afe15 100644
+index dcfdfedfc4e9ef7a5feb7bf4dd20efb07a679ade..e410d16e92d987a175872ac2ec11fa813cc594d5 100644
 --- a/arch/x86/kvm/mmu/mmutrace.h
 +++ b/arch/x86/kvm/mmu/mmutrace.h
 @@ -373,23 +373,25 @@ TRACE_EVENT(
@@ -100,10 +100,10 @@ index 3429c1413f423b8ad709eaaa858a0fff7b37220e..fa01719baf8d4f046e90dc0676109145
  );
  
 diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index f741f7d4cc2df9463bcecae04a79c9023bea9d12..047400af924d2e8f1263dfc77df0681afce500ea 100644
+index fb1b5d8b23e5cb4a473ee5ee0e82018f843e6753..3d2eb1f47d3d6b092d90853c91d6ae5aa7e86ddb 100644
 --- a/arch/x86/kvm/mmu/paging_tmpl.h
 +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -734,7 +734,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+@@ -716,7 +716,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
  	 */
  	kvm_mmu_hugepage_adjust(vcpu, fault);
  
@@ -113,7 +113,7 @@ index f741f7d4cc2df9463bcecae04a79c9023bea9d12..047400af924d2e8f1263dfc77df0681a
  	for (; shadow_walk_okay(&it); shadow_walk_next(&it)) {
  		/*
 diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 9c26038f6b77ec84287046f408a6b8d8a314f3f2..25e557de99d69a7acff8f2b4c2df85252c0a53fa 100644
+index 7b1102d26f9cd5e14e12238a76e79e0d7eddd7d8..5a2f8ce9a32b8d8dd5ac819d411eb8dc721a96b0 100644
 --- a/arch/x86/kvm/mmu/tdp_mmu.c
 +++ b/arch/x86/kvm/mmu/tdp_mmu.c
 @@ -1185,9 +1185,9 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,

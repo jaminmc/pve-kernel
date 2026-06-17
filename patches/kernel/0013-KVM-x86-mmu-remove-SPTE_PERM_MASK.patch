@@ -16,7 +16,7 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 3 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 91ce29fd6f1b237cf7543823f3e561d356eb005e..28086fa86fe00c567dcab702c24b5f0d6c4d1fe5 100644
+index 8c0ffa2cded69cec86b36e516067e04053fc1942..f4dfb8dc74de88872a887e994ce9245dd0ad4cd6 100644
 --- a/arch/x86/kvm/mmu/spte.h
 +++ b/arch/x86/kvm/mmu/spte.h
 @@ -42,9 +42,6 @@ static_assert(SPTE_TDP_AD_ENABLED == 0);

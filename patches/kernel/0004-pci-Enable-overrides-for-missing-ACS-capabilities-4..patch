@@ -50,32 +50,33 @@ your customers the hassle of this boot option.
 Signed-off-by: Fabian Grünbichler <f.gruenbichler@proxmox.com>
 Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
 ---
- .../admin-guide/kernel-parameters.txt         |   9 ++
+ .../admin-guide/kernel-parameters.txt         |  10 ++
  drivers/pci/quirks.c                          | 102 ++++++++++++++++++
- 2 files changed, 111 insertions(+)
+ 2 files changed, 112 insertions(+)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index d3e7034bece5256bd6c5f13b7fc25e5d2f699d7a..beb828b83e394fed40d9e7f7e1277cdfcd3f70bd 100644
+index 97007f4f69d4e8f19acaff81c9af8421a09822bf..f2f87206c7851ea9cd0974599514d0b1eb519df8 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5120,6 +5120,15 @@ Kernel parameters
- 				Also, it enforces the PCI Local Bus spec
- 				rule that those bits should be 0 in system reset
- 				events (useful for kexec/kdump cases).
-+		pci_acs_override =
-+				[PCIE] Override missing PCIe ACS support for:
-+				downstream
-+					All downstream ports - full ACS capabilities
-+				multifunction
-+					Add multifunction devices - multifunction ACS subset
-+				id:nnnn:nnnn
-+					Specific device - full ACS capabilities
-+					Specified as vid:did (vendor/device ID) in hex
- 		noioapicquirk	[APIC] Disable all boot interrupt quirks.
- 				Safety option to keep boot IRQs enabled. This
- 				should never be necessary.
+@@ -5313,6 +5313,16 @@ Kernel parameters
+ 		nomsi	Do not use MSI for native PCIe PME signaling (this makes
+ 			all PCIe root ports use INTx for all services).
+ 
++	pcie_acs_override=
++			[PCIE] Override missing PCIe ACS support for:
++			downstream
++				All downstream ports - full ACS capabilities
++			multifunction
++				Add multifunction devices - multifunction ACS subset
++			id:nnnn:nnnn
++				Specific device - full ACS capabilities
++				Specified as vid:did (vendor/device ID) in hex
++
+ 	pcmv=		[HW,PCMCIA] BadgePAD 4
+ 
+ 	pd_ignore_unused
 diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index cdb6271397f6af53f0b7ac70723bc15d50889cc9..83ae24d3a3186ac1abdc6fe4e87c7b83790e36f9 100644
+index 79968e26f6ad7118a64038d8e80b04dee8fe0b78..e8189482faaa42daaf9672938009ac09784ddcd7 100644
 --- a/drivers/pci/quirks.c
 +++ b/drivers/pci/quirks.c
 @@ -304,6 +304,106 @@ static int __init pci_apply_final_quirks(void)
@@ -185,7 +186,7 @@ index cdb6271397f6af53f0b7ac70723bc15d50889cc9..83ae24d3a3186ac1abdc6fe4e87c7b83
  /*
   * Decoding should be disabled for a PCI device during BAR sizing to avoid
   * conflict. But doing so may cause problems on host bridge and perhaps other
-@@ -5196,6 +5296,8 @@ static const struct pci_dev_acs_enabled {
+@@ -5194,6 +5294,8 @@ static const struct pci_dev_acs_enabled {
  	{ PCI_VENDOR_ID_CAVIUM, 0xA060, pci_quirk_mf_endpoint_acs },
  	/* APM X-Gene */
  	{ PCI_VENDOR_ID_AMCC, 0xE004, pci_quirk_xgene_acs },

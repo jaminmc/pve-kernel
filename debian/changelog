@@ -1,3 +1,11 @@
+proxmox-kernel-7.1 (7.1.0-1~beta1+1) trixie; urgency=medium
+
+  * beta release based on Linux 7.1.0
+
+  * update submodule and apply Proxmox kernel patches not yet upstream
+
+ -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Tue, 16 Jun 2026 22:09:30 -0400
+
 proxmox-kernel-7.0 (7.0.6-2) trixie; urgency=medium
 
   * update submodule and patches to Ubuntu-7.0.0-26.26, picking up a net GRO

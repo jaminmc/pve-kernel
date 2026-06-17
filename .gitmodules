@@ -1,6 +1,6 @@
 [submodule "submodules/zfsonlinux"]
 	path = submodules/zfsonlinux
-	url = ../zfsonlinux
+	url = https://github.com/jaminmc/zfsonlinux
 [submodule "submodules/ubuntu-kernel"]
 	path = submodules/ubuntu-kernel
-	url = ../mirror_ubuntu-kernels
+	url = git://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/stonking

@@ -51,10 +51,10 @@ index 2b3b6d442302b756f397360eb445a6d1a0f9c76b..666aa179601a1d8c0fcfc9e540cc319d
  
  Large pages
 diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index de709fb5bd76a103f174f95c3ca8c39474efea0e..a02b486cc6fe0892b1b78a1034f0d5b981c82cad 100644
+index 3776cf5382a2633f34fb6697fe50008c12f0e0aa..e4fca997ec797b7eada9e3e79df502c063acaa9a 100644
 --- a/arch/x86/include/asm/kvm-x86-ops.h
 +++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -93,6 +93,7 @@ KVM_X86_OP_OPTIONAL(sync_pir_to_irr)
+@@ -94,6 +94,7 @@ KVM_X86_OP_OPTIONAL(sync_pir_to_irr)
  KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
  KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
  KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
@@ -63,10 +63,10 @@ index de709fb5bd76a103f174f95c3ca8c39474efea0e..a02b486cc6fe0892b1b78a1034f0d5b9
  KVM_X86_OP_OPTIONAL(link_external_spt)
  KVM_X86_OP_OPTIONAL(set_external_spte)
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index a20263a4e7270984b9d6398db85f99ea66180bd4..8b4a55cc0918ebd093aeaf435de7cfe18e382e18 100644
+index e41dee01e2b376670ceb32cddd8b693c82b512fb..7f11b94daf34b3ae08087b9587cb5ecb16b62523 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -342,8 +342,8 @@ struct kvm_kernel_irq_routing_entry;
+@@ -343,8 +343,8 @@ struct kvm_kernel_irq_routing_entry;
   *     paging has exactly one upper level, making level completely redundant
   *     when has_4_byte_gpte=1.
   *
@@ -77,7 +77,7 @@ index a20263a4e7270984b9d6398db85f99ea66180bd4..8b4a55cc0918ebd093aeaf435de7cfe1
   *
   * Therefore, the maximum number of possible upper-level shadow pages for a
   * single gfn is a bit less than 2^14.
-@@ -359,12 +359,19 @@ union kvm_mmu_page_role {
+@@ -360,12 +360,19 @@ union kvm_mmu_page_role {
  		unsigned invalid:1;
  		unsigned efer_nx:1;
  		unsigned cr0_wp:1;
@@ -98,7 +98,7 @@ index a20263a4e7270984b9d6398db85f99ea66180bd4..8b4a55cc0918ebd093aeaf435de7cfe1
  		unsigned:3;
  
  		/*
-@@ -391,10 +398,10 @@ union kvm_mmu_page_role {
+@@ -392,10 +399,10 @@ union kvm_mmu_page_role {
   * tables (because KVM doesn't support Protection Keys with shadow paging), and
   * CR0.PG, CR4.PAE, and CR4.PSE are indirectly reflected in role.level.
   *
@@ -113,7 +113,7 @@ index a20263a4e7270984b9d6398db85f99ea66180bd4..8b4a55cc0918ebd093aeaf435de7cfe1
   */
  union kvm_mmu_extended_role {
  	u32 word;
-@@ -404,7 +411,6 @@ union kvm_mmu_extended_role {
+@@ -405,7 +412,6 @@ union kvm_mmu_extended_role {
  		unsigned int cr4_pse:1;
  		unsigned int cr4_pke:1;
  		unsigned int cr4_smap:1;
@@ -121,7 +121,7 @@ index a20263a4e7270984b9d6398db85f99ea66180bd4..8b4a55cc0918ebd093aeaf435de7cfe1
  		unsigned int cr4_la57:1;
  		unsigned int efer_lma:1;
  	};
-@@ -1856,6 +1862,7 @@ struct kvm_x86_ops {
+@@ -1888,6 +1894,7 @@ struct kvm_x86_ops {
  	int (*set_tss_addr)(struct kvm *kvm, unsigned int addr);
  	int (*set_identity_map_addr)(struct kvm *kvm, u64 ident_addr);
  	u8 (*get_mt_mask)(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
@@ -130,10 +130,10 @@ index a20263a4e7270984b9d6398db85f99ea66180bd4..8b4a55cc0918ebd093aeaf435de7cfe1
  	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
  			     int root_level);
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 25ee4d04e5cef081fd2cd863f078a4f65224cfa3..e72baca6fea0be8bfe111c1d8acadf23631de504 100644
+index f9d879835a0cf4c481e7729ecd6da8f3f97418c6..789c55c825145b3b04a87f8baa6d76f74c881888 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -227,7 +227,7 @@ static inline bool __maybe_unused is_##reg##_##name(struct kvm_mmu *mmu)	\
+@@ -229,7 +229,7 @@ static inline bool __maybe_unused is_##reg##_##name(struct kvm_mmu *mmu)	\
  }
  BUILD_MMU_ROLE_ACCESSOR(base, cr0, wp);
  BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pse);
@@ -142,7 +142,7 @@ index 25ee4d04e5cef081fd2cd863f078a4f65224cfa3..e72baca6fea0be8bfe111c1d8acadf23
  BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, smap);
  BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pke);
  BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, la57);
-@@ -5755,7 +5755,7 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
+@@ -5769,7 +5769,7 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
  
  	role.base.efer_nx = ____is_efer_nx(regs);
  	role.base.cr0_wp = ____is_cr0_wp(regs);
@@ -151,7 +151,7 @@ index 25ee4d04e5cef081fd2cd863f078a4f65224cfa3..e72baca6fea0be8bfe111c1d8acadf23
  	role.base.smap_andnot_wp = ____is_cr4_smap(regs) && !____is_cr0_wp(regs);
  	role.base.has_4_byte_gpte = !____is_cr4_pae(regs);
  
-@@ -5767,7 +5767,6 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
+@@ -5781,7 +5781,6 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
  	else
  		role.base.level = PT32_ROOT_LEVEL;
  
@@ -159,7 +159,7 @@ index 25ee4d04e5cef081fd2cd863f078a4f65224cfa3..e72baca6fea0be8bfe111c1d8acadf23
  	role.ext.cr4_smap = ____is_cr4_smap(regs);
  	role.ext.cr4_pse = ____is_cr4_pse(regs);
  
-@@ -5826,6 +5825,7 @@ kvm_calc_tdp_mmu_root_page_role(struct kvm_vcpu *vcpu,
+@@ -5840,6 +5839,7 @@ kvm_calc_tdp_mmu_root_page_role(struct kvm_vcpu *vcpu,
  
  	role.access = ACC_ALL;
  	role.cr0_wp = true;

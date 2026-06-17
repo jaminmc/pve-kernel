@@ -20,7 +20,7 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 4283cea3e66c698285ffad4b4e0cd26220170c8d..317b9cd1537c116c62458ebd9ca3b2de59469c98 100644
+index a107ddb66601a8866a52422a3bfdf195a9e165b7..7913672c0f6f2094303e624603a23ba426ce7954 100644
 --- a/arch/x86/kvm/mmu/spte.h
 +++ b/arch/x86/kvm/mmu/spte.h
 @@ -17,10 +17,20 @@
