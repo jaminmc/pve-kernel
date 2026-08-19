@@ -1,6 +1,7 @@
 [submodule "submodules/zfsonlinux"]
 	path = submodules/zfsonlinux
 	url = https://github.com/jaminmc/zfsonlinux
+	branch = linux-7.2
 [submodule "submodules/ubuntu-kernel"]
 	path = submodules/ubuntu-kernel
 	url = git://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/stonking
