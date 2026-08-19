@@ -71,7 +71,7 @@ deb: $(DEBS)
 	#lintian $(HDR_DEB)
 	lintian $(LINUX_TOOLS_DEB)
 
-$(META_DEB) $(META_HDR_DEB) $(LINUX_TOOLS_DEB) $(HDR_DEB) $(DST_DEB) &: $(BUILD_DIR).prepared
+$(META_DEB) $(META_HDR_DEB) $(LINUX_TOOLS_DEB) $(LINUX_TOOLS_DBG_DEB) $(HDR_DEB) $(DST_DEB) $(SIGNED_TEMPLATE_DEB) &: $(BUILD_DIR).prepared
 	cd $(BUILD_DIR); dpkg-buildpackage --jobs=auto -b -uc -us
 
 dsc:
