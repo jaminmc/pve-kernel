@@ -79,14 +79,14 @@ binary: install
 
 .config_mark:
 	cd $(KERNEL_SRC); scripts/config $(PMX_CONFIG_OPTS)
-	$(MAKE) -C $(KERNEL_SRC) olddefconfig
+	$(MAKE) -C $(KERNEL_SRC) LOCALVERSION= olddefconfig
 	# copy to allow building in parallel to kernel/module compilation without interference
 	rm -rf $(KERNEL_SRC_COPY)
 	cp -ar $(KERNEL_SRC) $(KERNEL_SRC_COPY)
 	touch $@
 
 .compile_mark: .config_mark
-	$(MAKE) -C $(KERNEL_SRC) KBUILD_BUILD_VERSION_TIMESTAMP="PMX $(DEB_VERSION) ($(CHANGELOG_DATE_UTC_ISO))"
+	$(MAKE) -C $(KERNEL_SRC) LOCALVERSION= KBUILD_BUILD_VERSION_TIMESTAMP="PMX $(DEB_VERSION) ($(CHANGELOG_DATE_UTC_ISO))"
 	touch $@
 
 .install_mark: .compile_mark .modules_compile_mark
@@ -96,7 +96,7 @@ binary: install
 	install -m 644 $(KERNEL_SRC)/.config debian/$(PMX_KERNEL_PKG)/boot/config-$(KVNAME)
 	install -m 644 $(KERNEL_SRC)/System.map debian/$(PMX_KERNEL_PKG)/boot/System.map-$(KVNAME)
 	install -m 644 $(KERNEL_SRC)/$(KERNEL_IMAGE_PATH) debian/$(PMX_KERNEL_PKG)/boot/$(KERNEL_INSTALL_FILE)-$(KVNAME)
-	$(MAKE) -C $(KERNEL_SRC) INSTALL_MOD_PATH=$(BUILD_DIR)/debian/$(PMX_KERNEL_PKG)/usr/ modules_install
+	$(MAKE) -C $(KERNEL_SRC) LOCALVERSION= INSTALL_MOD_PATH=$(BUILD_DIR)/debian/$(PMX_KERNEL_PKG)/usr/ modules_install
 	# install zfs drivers
 	install -d -m 0755 debian/$(PMX_KERNEL_PKG)/usr/lib/modules/$(KVNAME)/zfs
 	install -m 644 $(MODULES)/zfs.ko $(MODULES)/spl.ko debian/$(PMX_KERNEL_PKG)/usr/lib/modules/$(KVNAME)/zfs
@@ -209,7 +209,7 @@ endif
 	rm -rf $(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG)
 	mkdir -p $(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG)
 	cp $(KERNEL_SRC)/.config $(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG)/.config
-	$(MAKE) -C $(KERNEL_SRC_COPY) O=$(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG) -j1 syncconfig modules_prepare prepare scripts
+	$(MAKE) -C $(KERNEL_SRC_COPY) LOCALVERSION= O=$(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG) -j1 syncconfig modules_prepare prepare scripts
 	cd $(KERNEL_SRC_COPY); cp -a include scripts $(BUILD_DIR)/debian/$(PMX_HEADER_PKG)/usr/src/linux-headers-$(KVNAME)
 	find $(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG) -name \*.o.ur-\* -o -name '*.cmd' | xargs rm -f
 	rsync --ignore-existing -r -v -a $(addprefix $(BUILD_DIR)/$(KERNEL_SRC_COPY)/$(PMX_HEADER_PKG)/,arch include kernel scripts tools) $(BUILD_DIR)/debian/$(PMX_HEADER_PKG)/usr/src/linux-headers-$(KVNAME)/
@@ -228,7 +228,7 @@ endif
 .usr_headers_install_mark: .config_mark
 	rm -rf '$(PKG_DIR)'
 	mkdir -p  '$(PKG_DIR)'
-	$(MAKE) -C $(KERNEL_SRC) headers_install ARCH=$(KERNEL_HEADER_ARCH) INSTALL_HDR_PATH='$(CURDIR)'/$(OUT_DIR)
+	$(MAKE) -C $(KERNEL_SRC) LOCALVERSION= headers_install ARCH=$(KERNEL_HEADER_ARCH) INSTALL_HDR_PATH='$(CURDIR)'/$(OUT_DIR)
 	rm -rf $(OUT_DIR)/include/drm $(OUT_DIR)/include/scsi
 	find $(OUT_DIR)/include \( -name .install -o -name ..install.cmd \) -execdir rm {} +
 
