@@ -13,7 +13,7 @@ Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 881f92d7a469e7d7b82ef4061cd2d23c5b764770..480794143eb1a68bb3a1504ef338bfe72e1dd548 100644
+index 45e784462ec6ebe6cbbaf4e79c09b288d3f4555f..e4734d2d04367d413d0f431da2f5d0ef2d4b145f 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
 @@ -80,7 +80,7 @@ module_param(halt_poll_ns, uint, 0644);

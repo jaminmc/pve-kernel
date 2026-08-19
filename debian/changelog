@@ -1,3 +1,13 @@
+proxmox-kernel-7.2 (7.2.0-1~beta1+1) trixie; urgency=medium
+
+  * beta release based on Ubuntu-7.2.0-5.5 (Linux 7.2.0)
+
+  * drop MBEC/GMET KVM backports now in 7.2
+
+  * update zfsonlinux to linux-7.2 (sget_fc)
+
+ -- JaminMc <1310376+jaminmc@users.noreply.github.com>  Wed, 19 Aug 2026 16:05:39 -0400
+
 proxmox-kernel-7.1 (7.1.0-1~beta1+1) trixie; urgency=medium
 
   * beta release based on Linux 7.1.0
